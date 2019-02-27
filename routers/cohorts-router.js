@@ -37,4 +37,25 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.post('/', (req, res) => {
+  db('cohorts')
+    .insert(req.body)
+    .then(([id]) => {
+
+      db('cohorts')
+        .where({ id })
+        .first()
+        .then(cohort => {
+          res
+            .status(200)
+            .json(cohort);
+        })
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json(error);
+    })
+});
+
 module.exports = router;
