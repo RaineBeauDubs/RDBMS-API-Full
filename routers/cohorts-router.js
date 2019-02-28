@@ -85,4 +85,27 @@ router.put('/:id', (req, res) => {
     })
 });
 
+router.delete('/:id', (req, res) => {
+  const id = req.params.id
+  db('cohorts')
+    .where({ id })
+    .del()
+    .then(count => {
+      if(count > 0) {
+        res
+          .status(204)
+          .end()
+      } else {
+        res
+          .status(404)
+          .json({ message: 'What is this cohort you speak of?' })
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json(error)
+    })
+});
+
 module.exports = router;
